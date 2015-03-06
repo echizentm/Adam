@@ -63,20 +63,19 @@ sub update {
 
     for my $feature (keys %{$args{data}}) {
         next if ($args{data}{$feature} == 0.0);
-        my $gradient = -1 * $args{label} * $args{data}{$feature};
+        my $gradient = -1.0 * $args{label} * $args{data}{$feature};
 
-        $self->{moment1}{$feature} = 0 unless ($self->{moment1}{$feature});
-        $self->{moment2}{$feature} = 0 unless ($self->{moment2}{$feature});
+        $self->{moment1}{$feature} = 0.0 unless ($self->{moment1}{$feature});
+        $self->{moment2}{$feature} = 0.0 unless ($self->{moment2}{$feature});
 
         $self->{moment1}{$feature} *= $self->{beta1_t};
-        $self->{moment1}{$feature} += (1 - $self->{beta1_t}) * $gradient;
+        $self->{moment1}{$feature} += (1.0 - $self->{beta1_t}) * $gradient;
         $self->{moment2}{$feature} *= $self->{beta2};
-        $self->{moment2}{$feature} += (1 - $self->{beta2}) * $gradient * $gradient;
+        $self->{moment2}{$feature} += (1.0 - $self->{beta2}) * $gradient * $gradient;
 
-        my $alpha_t = $self->{alpha} * sqrt(1 - $self->{beta2_p}) / (1 - $self->{beta1_p});
         $self->{weight}{$feature} -= $self->{alpha}
-                                   * sqrt(1 - $self->{beta2_p})
-                                   / (1 - $self->{beta1_p})
+                                   * sqrt(1.0 - $self->{beta2_p})
+                                   / (1.0 - $self->{beta1_p})
                                    * $self->{moment1}{$feature}
                                    / (sqrt($self->{moment2}{$feature}) + $self->{error});
     }
